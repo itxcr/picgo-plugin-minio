@@ -8,12 +8,12 @@ const mimes = {
   ico: 'image/x-icon',
   webp: 'image/webp',
   svg: 'image/svg+xml',
-  mp4: 'video/mp4',
+  mp4: 'video/mp4'
 }
 let minioClient, bucket
 
 // 检查 Minio Client 是否已初始化
-function checkMinioInited() {
+function checkMinioInited () {
   return minioClient && bucket
 }
 
@@ -47,12 +47,12 @@ module.exports = {
   // 生成日期路径
   genDatePath (isAutoArchive) {
     if (!isAutoArchive) return ''
-    
+
     const date = new Date()
     const year = date.getFullYear()
     const month = (date.getMonth() + 1).toString().padStart(2, '0')
     const day = date.getDate().toString().padStart(2, '0')
-    
+
     return `${year}/${month}/${day}/`
   },
 
@@ -60,6 +60,7 @@ module.exports = {
   getConfig (ctx) {
     let userConfig = ctx.getConfig('picBed.minio')
     if (!userConfig) {
+      // eslint-disable-next-line no-throw-literal
       throw 'MinIO图床设置不存在[401]'
     }
     userConfig.port = userConfig.port ? userConfig.port : (userConfig.useSSL ? 443 : 80)
@@ -78,6 +79,7 @@ module.exports = {
 
     // 检查bucket是否存在, 不存在则报错
     if (!await minioClient.bucketExists(config.bucket)) {
+      // eslint-disable-next-line no-throw-literal
       throw `未找到 ${config.bucket} Bucket[404]`
       // 则创建该bucket(暂不实现该功能)
       // await minioClient.makeBucket(config.bucket, 'us-east-1')
@@ -87,6 +89,7 @@ module.exports = {
 
   // 在 minio 中检查是否存在该文件
   async isFileExistInMinio (filename) {
+    // eslint-disable-next-line no-throw-literal
     if (!checkMinioInited()) throw 'Minio Client 未初始化'
 
     try {
@@ -103,6 +106,7 @@ module.exports = {
 
   // 在 minio 中删除文件
   async deleteFileInMinio (filename) {
+    // eslint-disable-next-line no-throw-literal
     if (!checkMinioInited()) throw 'Minio Client 未初始化'
 
     try {
@@ -114,6 +118,7 @@ module.exports = {
 
   // 上传文件到 minio
   async uploadFileToMinio (path, file, extname) {
+    // eslint-disable-next-line no-throw-literal
     if (!checkMinioInited()) throw 'Minio Client 未初始化'
 
     const metaData = {
